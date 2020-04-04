@@ -31,7 +31,7 @@ RUN curl -o /tmp/phpBB.zip "https://download.phpbb.com/pub/release/3.3/3.3.0/php
     unzip -q /tmp/phpBB.zip -d /var/www && \
     mv /var/www/phpBB3 /var/www/phpBB && \
     chown -R www-data:www-data phpBB && \
-    rm -rf /tmp/* /var/lib/apt/lists/*``` && \
+    rm -rf /tmp/* /var/lib/apt/lists/* && \
     apt-get clean && \
     sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/phpBB#g' /etc/apache2/sites-available/000-default.conf
        
