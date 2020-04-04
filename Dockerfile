@@ -10,7 +10,7 @@ LABEL maintainer="Robbio <github.com/pigr8>" \
       org.opencontainers.image.url="https://hub.docker.com/r/pigr8/phpbb-3.3.0/" \
       org.opencontainers.image.source="https://github.com/pigr8/phpbb-3.3.0"
 
-VOLUME /var/www/phpBB
+ENV TZ Europe/Rome
 
 RUN apt-get update && apt-get install -y \
     libpng-dev \
@@ -24,14 +24,26 @@ RUN apt-get update && apt-get install -y \
 RUN set -ex; \
     docker-php-ext-configure gd --with-jpeg; \
     docker-php-ext-install -j "$(nproc)" \
-      gd \
-      mysqli \
-      zip    
+        gd \
+        mysqli \
+        zip
 
-# Setting up the Container and Supervisor
+RUN set -ex; \
+       curl -o /tmp/phpBB.zip "https://download.phpbb.com/pub/release/3.3/3.3.0/phpBB-3.3.0.zip"; \
+       unzip -q /tmp/phpBB.zip -d /var/www; \
+       mv /var/www/phpBB3 /var/www/phpBB; \
+       chown -R www-data:www-data phpBB; \
+       rm -rf /tmp/*; \
+       sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/phpBB#g' /etc/apache2/sites-available/000-default.conf
+       
+
+VOLUME /var/www/phpBB
+
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
 EXPOSE 80
 
-CMD ["bash"]
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["apache2-foreground"]
