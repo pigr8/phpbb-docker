@@ -27,8 +27,8 @@ RUN set -ex; \
         mysqli \
         zip
 
-RUN curl -o /tmp/phpBB.zip "https://download.phpbb.com/pub/release/3.3/3.3.0/phpBB-3.3.0.zip" && \
-    unzip -q /tmp/phpBB.zip -d /var/www && \
+RUN curl -o /phpBB.zip "https://download.phpbb.com/pub/release/3.3/3.3.0/phpBB-3.3.0.zip" && \
+    unzip -q /phpBB.zip -d /var/www && \
     mv /var/www/phpBB3 /var/www/phpBB && \
     chown -R www-data:www-data phpBB && \
     rm -rf /tmp/* /var/lib/apt/lists/* && \
