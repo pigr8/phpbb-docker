@@ -30,13 +30,14 @@ RUN set -ex; \
 RUN curl -o phpBB-3.3.0.zip "https://download.phpbb.com/pub/release/3.3/3.3.0/phpBB-3.3.0.zip"; \
     unzip -q phpBB-3.3.0.zip -d /var/www; \
     mv /var/www/phpBB3 /var/www/phpBB; \
-    chown -R www-data:www-data phpBB; \
+    chown -R www-data:www-data /var/www/phpBB; \
     rm -rf /tmp/* /var/lib/apt/lists/*; \
     apt-get clean; \
     sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/phpBB#g' /etc/apache2/sites-available/000-default.conf
        
 
 VOLUME /var/www/phpBB
+WORKDIR /var/www
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
