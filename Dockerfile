@@ -13,11 +13,11 @@ LABEL maintainer="Robbio <github.com/pigr8>" \
 ENV TZ Europe/Rome
 
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libzip-dev \
-    libjpeg-dev \
-    unzip \
-    zip
+       libpng-dev \
+       libzip-dev \
+       libjpeg-dev \
+       unzip \
+       zip
     && apt-get clean
     && /var/lib/apt/lists/*```
 
