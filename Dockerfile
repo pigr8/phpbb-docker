@@ -12,15 +12,14 @@ LABEL maintainer="Robbio <github.com/pigr8>" \
 
 ENV TZ Europe/Rome
 
-RUN apt-get update && apt-get install -y \
-       libpng-dev \
-       libzip-dev \
-       libjpeg-dev \
-       unzip \
-       zip
-    && apt-get clean
-    && /var/lib/apt/lists/*```
-
+RUN set -ex; \
+      apt-get update && apt-get install -y \
+      libpng-dev \
+      libzip-dev \
+      libjpeg-dev \
+      unzip \
+      zip
+      
 RUN set -ex; \
     docker-php-ext-configure gd --with-jpeg; \
     docker-php-ext-install -j "$(nproc)" \
@@ -33,7 +32,8 @@ RUN set -ex; \
        unzip -q /tmp/phpBB.zip -d /var/www; \
        mv /var/www/phpBB3 /var/www/phpBB; \
        chown -R www-data:www-data phpBB; \
-       rm -rf /tmp/*; \
+       rm -rf /tmp/* /var/lib/apt/lists/*```; \
+       apt-get clean ;\
        sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/phpBB#g' /etc/apache2/sites-available/000-default.conf
        
 
